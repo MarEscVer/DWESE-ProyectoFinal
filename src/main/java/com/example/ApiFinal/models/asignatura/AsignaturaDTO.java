@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AsignaturaDTO {
 
-	private Long id;
 	private String nombre;
 	private Double creditos;
+	private String tipo;
 	
 }

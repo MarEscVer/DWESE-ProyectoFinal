@@ -1,11 +1,10 @@
 package com.example.ApiFinal.models.asignatura;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.example.ApiFinal.models.AlumnoAsignatura;
-import com.example.ApiFinal.models.alumno.Alumno;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,7 +14,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,8 +22,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class Asignatura {
+public class Asignatura implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +35,9 @@ public class Asignatura {
 	
 	@Column(nullable=false)
 	private Double creditos;
+	
+	@Column(nullable=false)
+	private String tipo;
 	
 	@OneToMany(mappedBy="asignatura", cascade=CascadeType.ALL, orphanRemoval = true)
 	private Set<AlumnoAsignatura> alumnosAsignatura = new HashSet<>();
