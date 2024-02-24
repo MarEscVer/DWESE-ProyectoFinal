@@ -17,6 +17,9 @@ import com.example.ApiFinal.models.asignatura.AsignaturaDTO;
 import com.example.ApiFinal.service.impl.AlumnoServiceImpl;
 import com.example.ApiFinal.service.impl.AsignaturaServiceImpl;
 
+/**
+ * Controlador para gestionar las operaciones relacionadas con las asignaturas.
+ */
 @Controller
 @RequestMapping("/asignaturas")
 public class AsignaturaController {
@@ -27,6 +30,12 @@ public class AsignaturaController {
 	@Autowired
 	AlumnoServiceImpl alumnoService;
 	
+	/**
+     * Método para manejar la solicitud GET a la ruta "/asignaturas/".
+     * Muestra todas las asignaturas disponibles.
+     * @param model Modelo para pasar datos a la vista.
+     * @return Nombre de la vista a la que se redirige.
+     */
 	@GetMapping("/")
 	public String asignaturas(Model model) {
 		model.addAttribute("asignaturas", asignaturaService.getAllAsignaturas());
@@ -34,6 +43,13 @@ public class AsignaturaController {
 		return "asignaturas";
 	}
 	
+	/**
+     * Método para manejar la solicitud GET a la ruta "/asignaturas/alumnos".
+     * Muestra los alumnos matriculados en una asignatura.
+     * @param codigo ID de la asignatura.
+     * @param model Modelo para pasar datos a la vista.
+     * @return Nombre de la vista a la que se redirige.
+     */
 	@GetMapping("/alumnos")
 	public String asignaturasAlumnos(@RequestParam(required=false, name="codigo") String codigo, Model model) {
 		if(codigo==null) {
@@ -46,6 +62,15 @@ public class AsignaturaController {
 		
 		return "asignaturasAlumnos";
 	}
+	
+	/**
+     * Método para manejar la solicitud GET a la ruta "/asignaturas/add".
+     * Muestra el formulario para agregar una nueva asignatura.
+     * @param error Parámetro para indicar un error.
+     * @param nombre Nombre de la asignatura (en caso de error).
+     * @param model Modelo para pasar datos a la vista.
+     * @return Nombre de la vista a la que se redirige.
+     */
 	@GetMapping("/add")
 	public String addAsignaturaGet(@RequestParam(required=false,name="error") String error,
 			@RequestParam(required=false,name="asig") String nombre,
@@ -58,7 +83,13 @@ public class AsignaturaController {
 		return "addAsignatura";
 	}
 	
-	
+	/**
+     * Método para manejar la solicitud POST a la ruta "/asignaturas/add".
+     * Inserta una nueva asignatura en la base de datos.
+     * @param asig Objeto AsignaturaDTO con los datos de la nueva asignatura.
+     * @param model Modelo para pasar datos a la vista.
+     * @return Nombre de la vista a la que se redirige.
+     */
 	@PostMapping("/add")
 	public String addAsignaturaPost(@ModelAttribute AsignaturaDTO asig,Model model) {
 		
@@ -74,7 +105,13 @@ public class AsignaturaController {
 		return "redirect:/asignaturas/";
 	}
 	
-	
+	 /**
+     * Método para manejar la solicitud GET a la ruta "/asignaturas/edit".
+     * Muestra el formulario de edición de una asignatura.
+     * @param asig ID de la asignatura.
+     * @param model Modelo para pasar datos a la vista.
+     * @return Nombre de la vista a la que se redirige.
+     */
 	@GetMapping("/edit")
 	public String editAsig(@RequestParam(name="asig") String asig,Model model) {
 		Optional<Asignatura> asignatura = asignaturaService.findAsignaturaById(Long.parseLong(asig));
@@ -82,7 +119,12 @@ public class AsignaturaController {
 		return "editAsignatura";
 	}
 	
-	
+	/**
+     * Método para manejar la solicitud POST a la ruta "/asignaturas/edit".
+     * Actualiza los datos de una asignatura.
+     * @param asig Objeto Asignatura con los datos actualizados.
+     * @return Nombre de la vista a la que se redirige.
+     */
 	@PostMapping("/edit")
 	public String updateAsig(@ModelAttribute Asignatura asig) {
 		
@@ -92,6 +134,13 @@ public class AsignaturaController {
 		return "redirect:/asignaturas/";
 	}
 	
+	/**
+     * Método para manejar la solicitud GET a la ruta "/asignaturas/alumnos/delete".
+     * Elimina un alumno de una asignatura.
+     * @param asig ID de la asignatura.
+     * @param alumn ID del alumno.
+     * @return Nombre de la vista a la que se redirige.
+     */
 	@GetMapping("/alumnos/delete")
 	public String asignaturaAlumnoDelete(@RequestParam(required=true, name="asig") String asig,
 			@RequestParam(required=true, name="alumn") String alumn){
