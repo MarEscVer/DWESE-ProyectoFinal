@@ -1,15 +1,17 @@
 package com.example.ApiFinal.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.example.ApiFinal.models.usuario.Usuario;
 import com.example.ApiFinal.service.UsuarioService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * Controlador para gestionar las operaciones relacionadas con los usuarios.
@@ -20,7 +22,7 @@ public class UsuarioController {
 
     @Autowired
     UsuarioService usuarioService;
-
+    
     /**
      * Método para mostrar el formulario de registro de usuarios.
      * @param model Modelo para pasar datos a la vista.
@@ -48,5 +50,19 @@ public class UsuarioController {
             model.addAttribute("error", "Error al registrar el usuario.");
             return "registroUsuario";
         }
+    }
+  
+    @GetMapping("/login")
+    public String login(Model model, String error) {
+        if (error != null) {
+            model.addAttribute("error", "Nombre de usuario o contraseña incorrectos.");
+        }
+
+        // Obtener el usuario autenticado
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName(); // Obtener el nombre de usuario
+        model.addAttribute("username", username);
+
+        return "login";
     }
 }
