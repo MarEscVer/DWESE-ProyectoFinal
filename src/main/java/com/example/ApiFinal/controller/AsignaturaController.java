@@ -1,14 +1,20 @@
 package com.example.ApiFinal.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -32,128 +38,63 @@ public class AsignaturaController {
 	AlumnoServiceImpl alumnoService;
 	
 	/**
-     * Método para manejar la solicitud GET a la ruta "/asignaturas/".
-     * Muestra todas las asignaturas disponibles.
-     * @param model Modelo para pasar datos a la vista.
-     * @return Nombre de la vista a la que se redirige.
+     * Método para obtener todas las asignaturas.
+     * @return ResponseEntity con la lista de asignaturas y el código de estado HTTP correspondiente.
      */
-	@GetMapping("/")
-	public String asignaturas(Model model) {
-		model.addAttribute("asignaturas", asignaturaService.getAllAsignaturas());
-		
-		return "asignaturas";
-	}
-	
-	/**
-     * Método para manejar la solicitud GET a la ruta "/asignaturas/alumnos".
-     * Muestra los alumnos matriculados en una asignatura.
-     * @param codigo ID de la asignatura.
-     * @param model Modelo para pasar datos a la vista.
-     * @return Nombre de la vista a la que se redirige.
+    @GetMapping("/")
+    public ResponseEntity<List<Asignatura>> getAllAsignaturas() {
+        List<Asignatura> asignaturas = asignaturaService.getAllAsignaturas();
+        return new ResponseEntity<>(asignaturas, HttpStatus.OK);
+    }
+
+    /**
+     * Método para obtener una asignatura por su ID.
+     * @param id ID de la asignatura.
+     * @return ResponseEntity con la asignatura y el código de estado HTTP correspondiente.
      */
-	@GetMapping("/alumnos")
-	public String asignaturasAlumnos(@RequestParam(required=false, name="codigo") String codigo, Model model) {
-		if(codigo==null) {
-			return "redirect:/asignaturas/";
-		}
-		
-		Optional<Asignatura> asignatura = asignaturaService.findAsignaturaById(Long.parseLong(codigo));
-		
-		model.addAttribute("asignatura", asignatura.get());
-		
-		return "asignaturasAlumnos";
-	}
-	
-	/**
-     * Método para manejar la solicitud GET a la ruta "/asignaturas/add".
-     * Muestra el formulario para agregar una nueva asignatura.
-     * @param error Parámetro para indicar un error.
-     * @param nombre Nombre de la asignatura (en caso de error).
-     * @param model Modelo para pasar datos a la vista.
-     * @return Nombre de la vista a la que se redirige.
+    @GetMapping("/{id}")
+    public ResponseEntity<Asignatura> getAsignaturaById(@PathVariable("id") Long id) {
+        Optional<Asignatura> asignaturaOptional = asignaturaService.findAsignaturaById(id);
+        return asignaturaOptional.map(asignatura -> new ResponseEntity<>(asignatura, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    /**
+     * Método para agregar una nueva asignatura.
+     * @param asignaturaDTO DTO de la nueva asignatura.
+     * @return ResponseEntity con la asignatura creada y el código de estado HTTP correspondiente.
      */
-	@GetMapping("/add")
-	public String addAsignaturaGet(@RequestParam(required=false,name="error") String error,
-			@RequestParam(required=false,name="asig") String nombre,
-			Model model) {
-		
-		AsignaturaDTO asig = new AsignaturaDTO();
-		
-		model.addAttribute("asig", asig);
-		model.addAttribute("error", error);
-		return "addAsignatura";
-	}
-	
-	/**
-     * Método para manejar la solicitud POST a la ruta "/asignaturas/add".
-     * Inserta una nueva asignatura en la base de datos.
-     * @param asig Objeto AsignaturaDTO con los datos de la nueva asignatura.
-     * @param model Modelo para pasar datos a la vista.
-     * @return Nombre de la vista a la que se redirige.
+    @PostMapping("/")
+    public ResponseEntity<Asignatura> addAsignatura(@RequestBody AsignaturaDTO asignaturaDTO) {
+        Asignatura asignatura = new Asignatura();
+        asignatura.setNombre(asignaturaDTO.getNombre());
+        asignatura.setTipo(asignaturaDTO.getTipo());
+        asignatura.setCreditos(asignaturaDTO.getCreditos());
+
+        Asignatura nuevaAsignatura = asignaturaService.insertarAsignatura(asignatura);
+        return new ResponseEntity<>(nuevaAsignatura, HttpStatus.CREATED);
+    }
+
+    /**
+     * Método para actualizar una asignatura existente.
+     * @param id ID de la asignatura a actualizar.
+     * @param asignaturaDTO DTO con los nuevos datos de la asignatura.
+     * @return ResponseEntity con la asignatura actualizada y el código de estado HTTP correspondiente.
      */
-	@PostMapping("/add")
-	public String addAsignaturaPost(@ModelAttribute AsignaturaDTO asig,Model model) {
-		
-		Asignatura asigBD = new Asignatura();
-		asigBD.setNombre(asig.getNombre());
-		asigBD.setTipo(asig.getTipo());
-		asigBD.setCreditos(asig.getCreditos());
-		
-		if (asignaturaService.insertarAsignatura(asigBD)==null) {
-			return "redirect:/asignaturas/add?error=Existe&asig="+asig.getNombre();
-		}
-		
-		return "redirect:/asignaturas/";
-	}
-	
-	 /**
-     * Método para manejar la solicitud GET a la ruta "/asignaturas/edit".
-     * Muestra el formulario de edición de una asignatura.
-     * @param asig ID de la asignatura.
-     * @param model Modelo para pasar datos a la vista.
-     * @return Nombre de la vista a la que se redirige.
-     */
-	@GetMapping("/edit")
-	public String editAsig(@RequestParam(name="asig") String asig,Model model) {
-		Optional<Asignatura> asignatura = asignaturaService.findAsignaturaById(Long.parseLong(asig));
-		model.addAttribute("asignatura",asignatura.get());
-		return "editAsignatura";
-	}
-	
-	/**
-     * Método para manejar la solicitud POST a la ruta "/asignaturas/edit".
-     * Actualiza los datos de una asignatura.
-     * @param asig Objeto Asignatura con los datos actualizados.
-     * @return Nombre de la vista a la que se redirige.
-     */
-	@PostMapping("/edit")
-	public String updateAsig(@ModelAttribute Asignatura asig) {
-		
-		if (asignaturaService.actualizarAsignatura(asig)==null) {
-			return "redirect:/asignaturas/edit?error=error&asig"+asig.getId();
-		}
-		return "redirect:/asignaturas/";
-	}
-	
-	/**
-     * Método para manejar la solicitud GET a la ruta "/asignaturas/alumnos/delete".
-     * Elimina un alumno de una asignatura.
-     * @param asig ID de la asignatura.
-     * @param alumn ID del alumno.
-     * @return Nombre de la vista a la que se redirige.
-     */
-	@DeleteMapping("/alumnos/delete")
-	public String asignaturaAlumnoDelete(@RequestParam(required=true, name="asig") String asig,
-			@RequestParam(required=true, name="alumn") String alumn){
-		
-		Asignatura asignatura = asignaturaService.findAsignaturaById(Long.parseLong(asig)).get();
-		if(asignatura !=null) {
-			Alumno alumno = alumnoService.findAlumnoById(Long.parseLong(alumn)).get();				
-			//asignatura.removeNota(alumno);
-			asignaturaService.actualizarAsignatura(asignatura);
-			return "redirect:/asignaturas/alumnos?codigo="+asig;
-		}else {
-			return "redirect:/asignaturas/";
-		}			
-	}
+    @PutMapping("/{id}")
+    public ResponseEntity<Asignatura> updateAsignatura(@PathVariable("id") Long id, @RequestBody AsignaturaDTO asignaturaDTO) {
+        Optional<Asignatura> asignaturaOptional = asignaturaService.findAsignaturaById(id);
+        if (asignaturaOptional.isPresent()) {
+            Asignatura asignatura = asignaturaOptional.get();
+            asignatura.setNombre(asignaturaDTO.getNombre());
+            asignatura.setTipo(asignaturaDTO.getTipo());
+            asignatura.setCreditos(asignaturaDTO.getCreditos());
+
+            Asignatura asignaturaActualizada = asignaturaService.actualizarAsignatura(asignatura);
+            return new ResponseEntity<>(asignaturaActualizada, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

@@ -39,11 +39,9 @@ public class SecurityConfiguration{
 	                .authorizeHttpRequests(request ->
 	                        request
 	                                .requestMatchers("/auth/**").permitAll()
-	                                .requestMatchers(HttpMethod.GET, "/alumnos/**").hasAnyAuthority(Role.ROLE_USER.toString(), Role.ROLE_ADMIN.toString())
-	                                .requestMatchers(HttpMethod.POST, "/alumnos/**").hasAuthority(Role.ROLE_ADMIN.toString())
-	                                .requestMatchers(HttpMethod.PUT, "/api/v1/stocks/**").hasAuthority(Role.ROLE_ADMIN.toString())
-	                                .requestMatchers(HttpMethod.DELETE, "/api/v1/stocks/**").hasAuthority(Role.ROLE_ADMIN.toString())
-	                                .requestMatchers("/api/v1/users/**").hasAuthority("ROLE_ADMIN")
+	                                .requestMatchers(HttpMethod.GET, "/alumnos/**", "/asignaturas/**").hasAnyAuthority(Role.ROLE_USER.toString(), Role.ROLE_ADMIN.toString())
+	                                .requestMatchers(HttpMethod.POST, "/alumnos/**", "/asignaturas/**").hasAuthority(Role.ROLE_ADMIN.toString())
+	                                .requestMatchers(HttpMethod.PUT, "/asignaturas/**").hasAuthority(Role.ROLE_ADMIN.toString())
 	                                .anyRequest().authenticated())
 	                .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
 	                .authenticationProvider(authenticationProvider()).addFilterBefore(
