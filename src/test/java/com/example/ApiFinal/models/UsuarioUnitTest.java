@@ -28,23 +28,21 @@ public class UsuarioUnitTest {
 
     @ParameterizedTest
     @CsvSource({
-        "'ApellidosUsuario', 'usuario@example.com', 'NombreUsuario', 'password', 'USER', 'usuario_normal', 'Usuario válido'",
-        "'', 'usuario@example.com', 'NombreUsuario', 'password', 'USER', 'usuario_normal', 'Apellidos vacíos'",
-        "'ApellidosUsuario', '', 'NombreUsuario', 'password', 'USER', 'usuario_normal', 'Email vacío'",
-        "'ApellidosUsuario', 'usuario@example.com', '', 'password', 'USER', 'usuario_normal', 'Nombre vacío'",
-        "'ApellidosUsuario', 'usuario@example.com', 'NombreUsuario', '', 'USER', 'usuario_normal', 'Password vacío'",
-        "'ApellidosUsuario', 'usuario@example.com', 'NombreUsuario', 'password', '', 'usuario_normal', 'Role vacío'",
-        "'ApellidosUsuario', 'usuario@example.com', 'NombreUsuario', 'password', 'USER', '', 'UserName vacío'",
-        "'ApellidosUsuario', 'usuario@example.com', 'NombreUsuario', 'password', 'USER', 'usuario_normal', 'Usuario válido'"
+        "'ApellidosUsuario', 'usuario@example.com', 'NombreUsuario', 'password', 'Usuario válido'",
+        "'', 'usuario@example.com', 'NombreUsuario', 'password', 'Apellidos vacíos'",
+        "'ApellidosUsuario', '', 'NombreUsuario', 'password', 'Email vacío'",
+        "'ApellidosUsuario', 'usuario@example.com', '', 'password', 'Nombre vacío'",
+        "'ApellidosUsuario', 'usuario@example.com', 'NombreUsuario', '', 'Password vacío'",
+        "'ApellidosUsuario', 'usuario@example.com', 'NombreUsuario', 'password', 'Role vacío'",
+        "'ApellidosUsuario', 'usuario@example.com', 'NombreUsuario', 'password', 'UserName vacío'",
+        "'ApellidosUsuario', 'usuario@example.com', 'NombreUsuario', 'password', 'Usuario válido'"
     })
-    void testValidationUsuario(String apellidos, String email, String nombre, String password, String role, String userName, String mensajeTest) {
+    void testValidationUsuario(String apellidos, String email, String nombre, String password, String mensajeTest) {
         Usuario usuario = new Usuario();
-        usuario.setApellidos(apellidos);
+        usuario.setLastName(apellidos);
         usuario.setEmail(email);
-        usuario.setNombre(nombre);
+        usuario.setFirstName(nombre);
         usuario.setPassword(password);
-        usuario.setRole(role);
-        usuario.setUserName(userName);
 
         Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
