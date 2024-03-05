@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Clase que representa los datos de un alumno utilizados para la creación o actualización de un alumno en el sistema.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

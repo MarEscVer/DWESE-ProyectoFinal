@@ -14,6 +14,9 @@ import com.example.ApiFinal.models.usuario.Usuario;
 import com.example.ApiFinal.repository.AlumnoRepository;
 import com.example.ApiFinal.repository.UsuarioRepository;
 
+/**
+ * Esta clase inicializa algunos datos de usuario y alumno en la base de datos al iniciar la aplicación.
+ */
 @Component
 public class InicializarDatos implements CommandLineRunner {
 

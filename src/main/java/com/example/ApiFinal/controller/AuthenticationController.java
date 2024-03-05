@@ -14,6 +14,10 @@ import com.example.ApiFinal.service.AuthenticationService;
 
 import lombok.RequiredArgsConstructor;
 
+
+/**
+ * Controlador para manejar las solicitudes de autenticación.
+ */
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -21,11 +25,23 @@ public class AuthenticationController {
 	@Autowired
 	AuthenticationService authenticationService;
 
+	/**
+     * Maneja la solicitud de registro de un nuevo usuario.
+     *
+     * @param request La solicitud de registro de un nuevo usuario.
+     * @return La respuesta de autenticación JWT.
+     */
 	@PostMapping("/signup")
 	public ResponseEntity<JwtAuthenticationResponse> signup(@RequestBody SignUpRequest request) {
 		return ResponseEntity.ok(authenticationService.signup(request));
 	}
 
+	/**
+     * Maneja la solicitud de inicio de sesión de un usuario existente.
+     *
+     * @param request La solicitud de inicio de sesión de un usuario existente.
+     * @return La respuesta de autenticación JWT.
+     */
 	@PostMapping("/signin")
 	public ResponseEntity<JwtAuthenticationResponse> signin(@RequestBody SignInRequest request) {
 		return ResponseEntity.ok(authenticationService.signin(request));

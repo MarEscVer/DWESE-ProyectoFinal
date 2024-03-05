@@ -19,6 +19,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Clase que representa a un alumno en el sistema.
+ */
 @Entity
 @Table(name = "alumno")
 @Data

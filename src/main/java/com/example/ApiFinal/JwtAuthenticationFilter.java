@@ -20,12 +20,25 @@ import com.example.ApiFinal.service.UsuarioService;
 
 import java.io.IOException;
 
+/**
+ * Este filtro intercepta cada petición HTTP para autenticar al usuario utilizando un token JWT.
+ */
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JwtService jwtService;
     @Autowired
     private UsuarioService usuarioService;
+    
+    /**
+     * Método para filtrar cada petición HTTP y autenticar al usuario utilizando un token JWT.
+     *
+     * @param request     La solicitud HTTP entrante.
+     * @param response    La respuesta HTTP saliente.
+     * @param filterChain El filtro de cadena para pasar la solicitud al siguiente filtro en la cadena.
+     * @throws ServletException Si hay algún error en el servlet.
+     * @throws IOException      Si hay algún error de entrada/salida.
+     */
     @Override
     // Filtro que se ejecuta antes de cada petición
     protected void doFilterInternal(@NonNull HttpServletRequest request,

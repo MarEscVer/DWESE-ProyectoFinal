@@ -17,6 +17,9 @@ import com.example.ApiFinal.service.JwtService;
 
 import lombok.Builder;
 
+/**
+ * Implementación del servicio de autenticación.
+ */
 @Builder
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -25,7 +28,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    // Constructor para inyección de dependencias (si usas Spring)
+    /**
+     *  Constructor para inyección de dependencias (si usas Spring)
+     * @param usuarioRepository
+     * @param passwordEncoder
+     * @param jwtService
+     * @param authenticationManager
+     */
     public AuthenticationServiceImpl(UsuarioRepository usuarioRepository,
                                      PasswordEncoder passwordEncoder,
                                      JwtService jwtService,
@@ -36,6 +45,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
+    /**
+     * Registra un nuevo usuario en el sistema.
+     * @param request La solicitud de registro.
+     * @return Una respuesta de autenticación JWT.
+     */
     @Override
     public JwtAuthenticationResponse signup(SignUpRequest request) {
         if(usuarioRepository.existsByEmail(request.getEmail())) {
@@ -53,6 +67,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return JwtAuthenticationResponse.builder().token(jwt).build();
     }
 
+    /**
+     * Autentica un usuario existente en el sistema.
+     * @param request La solicitud de inicio de sesión.
+     * @return Una respuesta de autenticación JWT.
+     */
     @Override
     public JwtAuthenticationResponse signin(SignInRequest request) {
         // Maneja la autenticación

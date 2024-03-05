@@ -25,6 +25,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Clase que representa un usuario en el sistema.
+ */
 @Entity
 @Table(name="usuarios")
 @Data

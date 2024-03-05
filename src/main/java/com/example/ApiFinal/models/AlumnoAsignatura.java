@@ -14,6 +14,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entidad que representa la relación entre un alumno y una asignatura, junto con la nota obtenida.
+ */
 @Entity
 @Table(name="alumno_matricula_asignatura")
 @Data

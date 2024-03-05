@@ -17,6 +17,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Clase que representa una asignatura en el sistema.
+ */
 @Entity
 @Table(name="asignatura")
 @Data

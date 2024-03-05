@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Clase que representa los datos de una asignatura utilizados para la creación o actualización de una asignatura en el sistema.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
