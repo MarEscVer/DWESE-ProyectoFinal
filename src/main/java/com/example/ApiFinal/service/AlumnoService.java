@@ -10,4 +10,5 @@ public interface AlumnoService {
 	public Alumno insertarAlumno(Alumno alumno);
 	public Alumno actualizarAlumno(Alumno alumno);
 	public Alumno findAlumnoByNif(String nif);
+	void deleteAlumnoById(Long id);
 }

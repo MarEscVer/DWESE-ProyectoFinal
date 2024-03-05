@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.ApiFinal.exception.GlobalExceptionHandler;
 import com.example.ApiFinal.models.AlumnoAsignatura;
 import com.example.ApiFinal.models.alumno.Alumno;
 import com.example.ApiFinal.models.alumno.AlumnoDTO;
@@ -54,10 +55,15 @@ public class AlumnoController {
      * @return ResponseEntity con el alumno recuperado y el código de estado HTTP.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Alumno> getAlumnoById(@PathVariable("id") Long id) {
-        Optional<Alumno> alumnoOptional = alumnoService.findAlumnoById(id);
-        return alumnoOptional.map(alumno -> new ResponseEntity<>(alumno, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<?> getAlumnoById(@PathVariable("id") Long id) {
+        try{
+        	Optional<Alumno> alumnoOptional = alumnoService.findAlumnoById(id);
+        	return alumnoOptional.map(alumno -> new ResponseEntity<>(alumno, HttpStatus.OK))
+                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        } catch (GlobalExceptionHandler e) {
+        	return new ResponseEntity<>("No se encontró alumno con el ID", HttpStatus.NOT_FOUND);
+        }
+        
     }
 
 
@@ -75,6 +81,56 @@ public class AlumnoController {
             return new ResponseEntity<>(nuevoAlumno, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+    }
+
+    /**
+     * Elimina un alumno específico por su ID.
+     * 
+     * @param id ID del alumno a eliminar.
+     * @return ResponseEntity con el mensaje de éxito y el código de estado HTTP correspondiente.
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteAlumnoById(@PathVariable("id") Long id) {
+        try {
+            alumnoService.deleteAlumnoById(id);
+            return new ResponseEntity<>("Alumno eliminado correctamente", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("No se pudo eliminar el alumno", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    /**
+     * Actualiza la información de un alumno existente en la base de datos.
+     * 
+     * @param id         ID del alumno a actualizar.
+     * @param alumnoDTO  Datos actualizados del alumno.
+     * @return ResponseEntity con el alumno actualizado y el código de estado HTTP.
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizarAlumno(@PathVariable("id") Long id, @RequestBody AlumnoDTO alumnoDTO) {
+        Optional<Alumno> alumnoOptional = alumnoService.findAlumnoById(id);
+        
+        if (alumnoOptional.isPresent()) {
+            Alumno alumnoExistente = alumnoOptional.get();
+            
+            // Actualizar la información del alumno con los datos proporcionados
+            alumnoExistente.setNif(alumnoDTO.getNif());
+            alumnoExistente.setNombre(alumnoDTO.getNombre());
+            alumnoExistente.setApellido1(alumnoDTO.getApellido1());
+            alumnoExistente.setApellido2(alumnoDTO.getApellido2());
+            alumnoExistente.setCiudad(alumnoDTO.getCiudad());
+            alumnoExistente.setDireccion(alumnoDTO.getDireccion());
+            alumnoExistente.setTelefono(alumnoDTO.getTelefono());
+            alumnoExistente.setFechaNacimiento(alumnoDTO.getFechaNacimiento());
+            alumnoExistente.setSexo(alumnoDTO.getSexo());
+            
+            // Guardar los cambios en la base de datos
+            Alumno alumnoActualizado = alumnoService.actualizarAlumno(alumnoExistente);
+            
+            return new ResponseEntity<>(alumnoActualizado, HttpStatus.OK);
+        } else {
+        	return new ResponseEntity<>("No se pudo editar el alumno", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

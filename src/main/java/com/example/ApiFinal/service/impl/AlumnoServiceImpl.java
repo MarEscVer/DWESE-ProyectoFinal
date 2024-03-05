@@ -99,5 +99,22 @@ public class AlumnoServiceImpl implements AlumnoService{
 		return null;
 	}
 
+	/**
+	 * Eliminar alumno por id
+	 */
+	@Override
+    public void deleteAlumnoById(Long id) {
+        Optional<Alumno> alumnoOptional = alumnoRepo.findById(id);
+        
+        // Verificar si el alumno existe
+        if (alumnoOptional.isPresent()) {
+            // Si existe, eliminarlo de la base de datos
+        	alumnoRepo.deleteById(id);
+        } else {
+            // Si no existe, lanzar una excepción o manejar de alguna otra manera
+            throw new IllegalArgumentException("No se encontró ningún alumno con el ID proporcionado");
+        }
+    }
+
 
 }
