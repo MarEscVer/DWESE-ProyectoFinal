@@ -1,0 +1,353 @@
+{
+	"info": {
+		"_postman_id": "534e4321-1a65-41f0-9218-3c5e2c63bcd0",
+		"name": "ApiFinal",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30104632"
+	},
+	"item": [
+		{
+			"name": "SignIn",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"usuario@admin.com\",\r\n    \"password\": \"admin\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/signin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listado Alumnos",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c3VhcmlvQGFkbWluLmNvbSIsImlhdCI6MTcwOTY1OTgyNSwiZXhwIjoxNzA5Njk1ODI1fQ.vSzFxQp82h0XYrurY1rNZvHHOXK7tW-zeQaZJaCtOX0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/alumnos/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"alumnos",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listado Alumnos No Auth",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/alumnos/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"alumnos",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar alumno",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c3VhcmlvQGFkbWluLmNvbSIsImlhdCI6MTcwOTY1OTgyNSwiZXhwIjoxNzA5Njk1ODI1fQ.vSzFxQp82h0XYrurY1rNZvHHOXK7tW-zeQaZJaCtOX0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/alumnos/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"alumnos",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Insertar alumno",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c3VhcmlvQGFkbWluLmNvbSIsImlhdCI6MTcwOTY1OTgyNSwiZXhwIjoxNzA5Njk1ODI1fQ.vSzFxQp82h0XYrurY1rNZvHHOXK7tW-zeQaZJaCtOX0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nif\": \"12345678H\",\r\n    \"nombre\": \"Nombre1\",\r\n    \"apellido1\": \"Apellido11\",\r\n    \"apellido2\": \"Apellido21\",\r\n    \"ciudad\": \"Ciudad1\",\r\n    \"direccion\": \"Direccion1\",\r\n    \"telefono\": \"123456789\",\r\n    \"fechaNacimiento\": \"2024-03-05\",\r\n    \"sexo\": \"M\",\r\n    \"alumnoAsignaturas\": []\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/alumnos/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"alumnos",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar alumno",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c3VhcmlvQGFkbWluLmNvbSIsImlhdCI6MTcwOTY1OTgyNSwiZXhwIjoxNzA5Njk1ODI1fQ.vSzFxQp82h0XYrurY1rNZvHHOXK7tW-zeQaZJaCtOX0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/alumnos/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"alumnos",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar alumno no existente",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c3VhcmlvQGFkbWluLmNvbSIsImlhdCI6MTcwOTY1OTgyNSwiZXhwIjoxNzA5Njk1ODI1fQ.vSzFxQp82h0XYrurY1rNZvHHOXK7tW-zeQaZJaCtOX0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/alumnos/20",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"alumnos",
+						"20"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modificar alumno",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c3VhcmlvQGFkbWluLmNvbSIsImlhdCI6MTcwOTY1OTgyNSwiZXhwIjoxNzA5Njk1ODI1fQ.vSzFxQp82h0XYrurY1rNZvHHOXK7tW-zeQaZJaCtOX0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"nif\": \"87654333A\",\r\n        \"nombre\": \"Nombre2\",\r\n        \"apellido1\": \"Apellido12\",\r\n        \"apellido2\": \"Apellido22\",\r\n        \"ciudad\": \"Ciudad2\",\r\n        \"direccion\": \"Direccion2\",\r\n        \"telefono\": \"987654321\",\r\n        \"fechaNacimiento\": \"2024-03-05\",\r\n        \"sexo\": \"F\",\r\n        \"alumnoAsignaturas\": []\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/alumnos/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"alumnos",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modificar alumno no existente",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c3VhcmlvQGFkbWluLmNvbSIsImlhdCI6MTcwOTY1OTgyNSwiZXhwIjoxNzA5Njk1ODI1fQ.vSzFxQp82h0XYrurY1rNZvHHOXK7tW-zeQaZJaCtOX0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"nif\": \"87654333A\",\r\n        \"nombre\": \"Nombre2\",\r\n        \"apellido1\": \"Apellido12\",\r\n        \"apellido2\": \"Apellido22\",\r\n        \"ciudad\": \"Ciudad2\",\r\n        \"direccion\": \"Direccion2\",\r\n        \"telefono\": \"987654321\",\r\n        \"fechaNacimiento\": \"2024-03-05\",\r\n        \"sexo\": \"F\",\r\n        \"alumnoAsignaturas\": []\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/alumnos/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"alumnos",
+						"4"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
